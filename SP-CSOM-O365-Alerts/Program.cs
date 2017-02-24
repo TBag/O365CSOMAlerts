@@ -121,43 +121,12 @@ namespace SP_CSOM_O365_Alerts
             myNewAlert.AlertType = AlertType.List;
             myNewAlert.AlwaysNotify = false;
             myNewAlert.DeliveryChannels = AlertDeliveryChannel.Email;
-
+            myNewAlert.EventType = AlertEventType.All;
+            myNewAlert.Filter = "0";
             myNewAlert.Status = AlertStatus.On;
             myNewAlert.Title = "My new alert created at : " + DateTime.Now.ToString();
             myNewAlert.User = currentUser;
-
-            // These two properties currently have no impact on alert creation.
-            // This is a known bug.  If you set these properties and do not use the property bag
-            // you will receive an Object reference not set to an instance of an object exception.
-            // myNewAlert.EventType = AlertEventType.All;
-            // myNewAlert.Filter = "0";
-
-            // Currently, you need to use the property bag entries below to create the alert.
-            Dictionary<string, string> properties = new Dictionary<string, string>()
-            {
-                { "eventtypeindex", "0" },
-                    //Change Type: 
-                    // 0 = All Changes
-                    // 1 = New items added
-                    // 2 = New items are added
-                    // 3 = Existing items are modified 
-                { "FilterIndex", "0" } 
-                    //Send Me and alert when: 
-                    // 0 = Anything Changes
-                    // 1 = Someone else changes a document
-                    // 2 = Someone else changes a document created by me
-                    // 3 = Someone else changes a document modified by me
-            };
-
-            // You can also set addition properties to configure the alert, such as:
-            // properties.Add("dispformurl", "Shared Documents/Forms/DispForm.aspx");
-            // properties.Add("defaultitemopen", "Browser");
-            // properties.Add("sendurlinsms", "False");
-            // properties.Add("mobileurl", "https://cand3.sharepoint.com/_layouts/15/mobile/");
-            // properties.Add("siteurl", "https://cand3.sharepoint.com");
-
-            myNewAlert.Properties = properties;
-
+            
             var newAlertGuid = currentUser.Alerts.Add(myNewAlert);
 
             currentUser.Update();
